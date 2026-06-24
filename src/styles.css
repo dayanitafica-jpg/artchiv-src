@@ -1,0 +1,347 @@
+:root {
+  --bg: #070707;
+  --surface-2: #1a1a1a;
+  --gray-mid: #555555;
+  --gray-light: #888888;
+  --red: #c8102e;
+  --paper: #f3ede1;
+  --ink: #181410;
+  --ember: #ffcd8c;
+  --ember-dim: #7a5530;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  background: var(--bg);
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Space Mono', monospace;
+  color: #fff;
+}
+
+canvas {
+  touch-action: none;
+  display: block;
+}
+
+#ui-root {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo span {
+  color: var(--red);
+}
+
+header.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+}
+
+nav.links {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+nav.links a,
+nav.links button.navlink {
+  pointer-events: auto;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  text-decoration: none;
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  font-family: 'Space Mono', monospace;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+nav.links a:hover,
+nav.links button.navlink:hover {
+  color: #fff;
+  border-color: var(--red);
+}
+nav.links a.active,
+nav.links button.navlink.active {
+  color: #fff;
+}
+
+.breadcrumb {
+  position: absolute;
+  top: 64px;
+  left: 28px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.breadcrumb .sep {
+  color: var(--gray-mid);
+  opacity: 0.5;
+}
+.breadcrumb .here {
+  color: var(--red);
+}
+
+.hint {
+  position: absolute;
+  bottom: 26px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--gray-mid);
+  transition: opacity 0.6s ease;
+  text-transform: uppercase;
+}
+.hint.hidden {
+  opacity: 0;
+}
+
+.dim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 20;
+}
+.dim.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 380px;
+  max-width: 88vw;
+  background: var(--paper);
+  color: var(--ink);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 21;
+  padding: 34px 30px;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+.panel.open {
+  transform: translateX(0);
+}
+.panel .tag {
+  align-self: flex-start;
+  color: #fff;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 1px;
+  margin-bottom: 18px;
+}
+.panel h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1.25;
+  margin-bottom: 18px;
+}
+.panel p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #4a443a;
+  margin-bottom: 22px;
+}
+.panel .actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.panel .watch {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  align-self: flex-start;
+}
+.panel .close {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #8a8270;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-self: flex-start;
+  font-family: 'Space Mono', monospace;
+}
+.panel .close:hover {
+  color: var(--ink);
+}
+
+.filters {
+  position: absolute;
+  top: 96px;
+  left: 28px;
+  right: 28px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.chip {
+  pointer-events: auto;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 0.5px solid var(--surface-2);
+  color: var(--gray-mid);
+  background: transparent;
+  font-family: 'Space Mono', monospace;
+  transition: all 0.2s ease;
+}
+.chip:hover {
+  color: #fff;
+  border-color: var(--gray-mid);
+}
+.chip.on {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+
+#loading {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  transition: opacity 0.6s ease;
+}
+#loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#loading .ltitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#loading .ltitle span {
+  color: var(--red);
+}
+#loading .lbartrack {
+  width: 220px;
+  height: 1px;
+  background: var(--surface-2);
+}
+#loading .lbar {
+  height: 1px;
+  width: 0%;
+  background: var(--red);
+  transition: width 0.9s ease;
+}
+#loading .lcaption {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--gray-mid);
+  text-transform: uppercase;
+}
+
+.return-prompt {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+}
+.return-prompt button {
+  pointer-events: auto;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: rgba(227, 9, 9, 0.5);
+  border: 0.5px solid var(--surface-2);
+  color: var(--gray-light);
+  padding: 8px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+.return-prompt button:hover {
+  color: #fff;
+  border-color: var(--red);
+}
+
+@media (max-width: 640px) {
+  header.bar {
+    padding: 16px 18px;
+  }
+  nav.links a:not(.channel) {
+    display: none;
+  }
+  .filters,
+  .breadcrumb {
+    left: 18px;
+    right: 18px;
+  }
+  .breadcrumb {
+    top: 58px;
+  }
+  .filters {
+    top: 88px;
+  }
+  .panel {
+    width: 100%;
+  }
+}
